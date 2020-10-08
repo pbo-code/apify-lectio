@@ -13,7 +13,7 @@ Apify.main(async () => {
         const crawler = new Apify.PuppeteerCrawler({
             requestQueue,
             // Stop crawling after several pages
-            maxRequestsPerCrawl: 15,
+            maxRequestsPerCrawl: 30,
             handlePageTimeoutSecs: 60,            
             handlePageFunction: async ({ request, page }) => {
                 console.log(`On page: ${request.url}...`);                
@@ -54,7 +54,8 @@ Apify.main(async () => {
                             req.userData.label = "schema";
                             req.userData.school_id = request.userData.school_id;
                             req.userData.login = request.userData.login;                            
-                            req.userData.counter = request.userData.counter + 1;                            
+                            req.userData.counter = request.userData.counter + 1;      
+			    req.userData.week_count = request.userData.week_count;
                             return req;
                         }
                     });
@@ -137,7 +138,8 @@ Apify.main(async () => {
                                 req.userData.label = "schema";
                                 req.userData.school_id = request.userData.school_id;
                                 req.userData.login = request.userData.login;                                
-                                req.userData.counter = request.userData.counter + 1;                                
+                                req.userData.counter = request.userData.counter + 1;
+				req.userData.week_count = request.userData.week_count;
                                 return req;
                             }
                         });                
