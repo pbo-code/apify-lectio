@@ -2,12 +2,13 @@ const Apify = require('apify');
 const schoolId = process.env.school_id;
 const username = process.env.username;
 const password = process.env.password;
+const weekCount = process.env.weekcount;
 const stamLectioUrl = 'https://www.lectio.dk/lectio/';
 
 Apify.main(async () => {
         console.log(schoolId + "_" + username);
         const requestQueue = await Apify.openRequestQueue();
-        await requestQueue.addRequest({ uniqueKey: schoolId + "_" + username, url: 'https://www.lectio.dk/lectio/' + schoolId + '/login.aspx', userData: {label: "login", login: username, school_id: schoolId, password: password, counter: 0} });
+        await requestQueue.addRequest({ uniqueKey: schoolId + "_" + username, url: 'https://www.lectio.dk/lectio/' + schoolId + '/login.aspx', userData: {week_count: weekCount, label: "login", login: username, school_id: schoolId, password: password, counter: 0} });
 
         const crawler = new Apify.PuppeteerCrawler({
             requestQueue,
@@ -126,7 +127,7 @@ Apify.main(async () => {
                     await Apify.pushData(userDataBricks);
                     console.log("Bricks collected");
                     
-                    if (request.userData.counter < 3) {                                                
+                    if (request.userData.counter < request.userData.week_count) {                                                
                         console.log("Enqueueing schema");
                         const infos = await Apify.utils.enqueueLinks({
                             page,
