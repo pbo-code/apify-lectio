@@ -1,14 +1,41 @@
 {
-  "title": "Input schema for the apify/lectio actor.",
+  "title": "Lectio - Input schema for the apify actor",
+  "description": "",
   "type": "object",
   "schemaVersion": 1,
   "properties": {
-    "message": {
-      "title": "Message",
+    "school_id": {
+      "title": "School ID (from url)",
+      "type": "integer",
+      "description": "School ID",
+      "editor": "number"
+    },
+    "username": {
+      "title": "Username",
       "type": "string",
-      "description": "Just enter your hello world message.",
+      "description": "Username to log in",
       "editor": "textfield"
+    },
+    "password": {
+      "title": "Password",
+      "type": "string",
+      "description": "Password to log in",
+      "editor": "hidden"
+    },
+    "weekcount": {
+      "title": "Week count",
+      "type": "integer",
+      "description": "Number of weeks to scrape",
+      "default": 8,
+      "editor": "number",
+      "maximum": 30,
+      "minimum": 1
     }
   },
-  "required": []
+  "required": [
+    "school_id",
+    "username",
+    "password",
+    "weekcount"
+  ]
 }
