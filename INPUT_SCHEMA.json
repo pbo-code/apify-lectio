@@ -20,7 +20,7 @@
       "title": "Password",
       "type": "string",
       "description": "Password to log in",
-      "editor": "hidden"
+      "editor": "textfield"
     },
     "weekcount": {
       "title": "Week count",
