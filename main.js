@@ -1,14 +1,17 @@
 const Apify = require('apify');
-const schoolId = process.env.school_id;
-const username = process.env.username;
-const password = process.env.password;
-const weekCount = process.env.weekcount;
 const stamLectioUrl = 'https://www.lectio.dk/lectio/';
 
 Apify.main(async () => {
+	const input = await Apify.getInput();
+
+        const schoolId = input.school_id;
+        const username = input.username;
+        const password = input.password;
+        const weekCount = input.weekcount;
+	
         console.log(schoolId + "_" + username);
         const requestQueue = await Apify.openRequestQueue();
-        await requestQueue.addRequest({ uniqueKey: schoolId + "_" + username, url: 'https://www.lectio.dk/lectio/' + schoolId + '/login.aspx', userData: {week_count: weekCount, label: "login", login: username, school_id: schoolId, password: password, counter: 0} });
+        await requestQueue.addRequest({ uniqueKey: schoolId + "_" + username, url: stamLectioUrl + schoolId + '/login.aspx', userData: {week_count: weekCount, label: "login", login: username, school_id: schoolId, password: password, counter: 0} });
 
         const crawler = new Apify.PuppeteerCrawler({
             requestQueue,
@@ -33,7 +36,7 @@ Apify.main(async () => {
                     const teacherId = await page.evaluate(() => {
                         var loginErrorSpan = $('#MainTitle');
                         if (loginErrorSpan != undefined && loginErrorSpan.text().indexOf("Log ind") !== -1) {
-                            // skip this login, log error and continue to next login                
+                            // skip login, log error              
                             return false;
                         } else {
                             return $('#s_m_HeaderContent_MainTitle').attr("data-lectiocontextcard").substr(1);
